@@ -1,7 +1,6 @@
-// server.js
-require('dotenv').config();        
-const app = require('./src/app');  // debe ser tu instancia de Express
-
+// backend/server.js
+require('dotenv').config();
+const app = require('./src/app.js');
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
