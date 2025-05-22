@@ -1,7 +1,5 @@
 # 🚀 JSONPlaceholder Explorer
 
-[![Backend Tests](https://img.shields.io/github/actions/workflow/status/USERNAME/REPO/backend-tests.yml?branch=main)](#)
-[![Frontend Tests](https://img.shields.io/github/actions/workflow/status/USERNAME/REPO/frontend-tests.yml?branch=main)](#)
 [![Coverage](https://img.shields.io/badge/coverage-86%25-brightgreen)](#)
 
 ---
@@ -33,7 +31,7 @@ flowchart LR
 | Capa     | Tecnología                                |
 | -------- | ----------------------------------------- |
 | Frontend | Vue 3, Composition API, TailwindCSS, Vite |
-| Backend  | Node.js, Express, Axios, Morgan           |
+| Backend  | JavaScript,Node.js, Express, Axios, Morgan           |
 | Testing  | Jest, Supertest, Vue Test Utils           |
 
 ---
@@ -55,7 +53,7 @@ flowchart LR
 1. Clonar repositorio:
 
    ```bash
-   git clone <URL_DEL_REPOSITORIO>
+   git clone https://github.com/Santiago13dev/proyectofrontend
    cd proyectofrontend
    ```
 
