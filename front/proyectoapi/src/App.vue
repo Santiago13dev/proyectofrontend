@@ -1,11 +1,14 @@
-<!-- front/proyectoapi/src/App.vue -->
+<!-- src/App.vue -->
 <template>
+  <!-- 1) Sidebar fija -->
   <Sidebar
     :activeTab="activeTab"
     @change-tab="onTab"
   />
 
-  <div class="ml-64 flex flex-col min-h-screen bg-gray-50">
+  <!-- 2) Contenedor principal: usa tu clase .main-wrapper -->
+  <div class="main-wrapper">
+    <!-- HeaderBar fluye dentro de este contenedor -->
     <HeaderBar
       :tabs="tabs"
       :active="activeTab"
@@ -14,22 +17,19 @@
       @refresh="loadData"
     />
 
-    <main class="p-8 flex-1 overflow-auto">
+    <!-- Main: usa tu clase .content para padding/overflow -->
+    <main class="content">
       <h2 class="text-2xl font-bold mb-2">{{ activeTab }}</h2>
-      <p class="text-gray-600 mb-6">
-        Explora los {{ activeTab.toLowerCase() }} disponibles en JSONPlaceholder.
-      </p>
+      <p class="text-gray-600 mb-6">{{ descriptions[activeTab] }}</p>
 
-      <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        <!-- POSTS -->
+      <!-- Grid de cards -->
+      <div class="posts-grid">
         <PostCard
           v-if="activeTab === 'Posts'"
           v-for="item in displayed"
           :key="item.id"
           :post="item"
         />
-
-        <!-- USUARIOS -->
         <UserCard
           v-if="activeTab === 'Usuarios'"
           v-for="item in displayed"
@@ -37,16 +37,13 @@
           :user="item"
           @view-profile="showProfile"
         />
-
-        <!-- ÁLBUMES -->
         <AlbumCard
           v-if="activeTab === 'Álbumes'"
           v-for="item in displayed"
           :key="item.id"
           :album="item"
+          @view-album="showAlbum"
         />
-
-        <!-- TAREAS -->
         <TodoCard
           v-if="activeTab === 'Tareas'"
           v-for="item in displayed"
@@ -60,51 +57,52 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import Sidebar    from './components/Sidebar.vue';
-import HeaderBar  from './components/HeaderBar.vue';
-import PostCard   from './components/PostCard.vue';
-import UserCard   from './components/UserCard.vue';
-import AlbumCard  from './components/AlbumCard.vue';  // crea este componente
-import TodoCard   from './components/TodoCard.vue';   // y este también
+
+import Sidebar   from './components/Sidebar.vue';
+import HeaderBar from './components/HeaderBar.vue';
+import PostCard  from './components/PostCard.vue';
+import UserCard  from './components/UserCard.vue';
+import AlbumCard from './components/AlbumCard.vue';
+import TodoCard  from './components/TodoCard.vue';
 import { fetchData } from './services/api.js';
 
-const tabs     = ['Posts','Usuarios','Álbumes','Tareas'];
-const activeTab= ref('Posts');
-const raw      = ref([]);
-const filter   = ref('');
+const tabs = ['Posts', 'Usuarios', 'Álbumes', 'Tareas'];
+const descriptions = {
+  Posts:    'Explora los posts disponibles en JSONPlaceholder.',
+  Usuarios: 'Explora los usuarios disponibles. Puedes ver detalles y posts relacionados.',
+  Álbumes:  'Explora los álbumes disponibles. Cada uno contiene sus fotos.',
+  Tareas:   'Explora las tareas disponibles. Marca las completadas.',
+};
 
-// carga data según pestaña
+const activeTab = ref('Posts');
+const rawData   = ref([]);
+const filter    = ref('');
+
 async function loadData() {
-  try {
-    raw.value = await fetchData(activeTab.value);
-  } catch (e) {
-    console.error('Error fetching data:', e);
-    raw.value = [];
-  }
+  rawData.value = await fetchData(activeTab.value);
 }
 
-// al cambiar pestaña
 function onTab(tab) {
   activeTab.value = tab;
-  filter.value   = '';
+  filter.value    = '';
   loadData();
 }
 
-// muestra perfil de usuario (puede navegar o abrir modal)
-function showProfile(userId) {
-  console.log('Mostrar perfil de usuario', userId);
+function showProfile(id) {
+  console.log('Ver perfil usuario', id);
+}
+function showAlbum(id) {
+  console.log('Ver álbum', id);
 }
 
 onMounted(loadData);
 
-// lista filtrada
 const displayed = computed(() => {
-  if (!filter.value) return raw.value;
+  if (!filter.value) return rawData.value;
   const q = filter.value.toLowerCase();
-  return raw.value.filter(item => {
-    // Posts: title, Usuarios: name/username, Álbumes: title, Tareas: title
-    const text = item.title || item.name || item.username || '';
-    return text.toLowerCase().includes(q);
+  return rawData.value.filter(item => {
+    const text = (item.title || item.name || item.username || '').toLowerCase();
+    return text.includes(q);
   });
 });
 </script>
