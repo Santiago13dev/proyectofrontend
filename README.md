@@ -10,31 +10,21 @@
 Permite explorar **Posts**, **Usuarios**, **Álbumes** y **Tareas**, filtrar resultados y recargar datos.
 
 ---
-El backend sigue un patrón MVC (Modelo–Vista–Controlador) reforzado con principios de Arquitectura Limpia, de la siguiente manera:
 
-Modelo (Domain): contiene las entidades y la lógica de negocio pura.
+## 🏛️ Arquitectura y Estilo de Diseño
 
-Casos de uso (Use Cases): servicios que orquestan la lógica de las entidades.
+El **backend** sigue un patrón **MVC** (Modelo–Vista–Controlador) reforzado con principios de **Arquitectura Limpia**, de la siguiente manera:
 
-Controlador (Controller): expone rutas HTTP y valida entradas/salidas.
+* **Modelo (Domain)**: contiene las entidades y la lógica de negocio pura.
+* **Casos de uso (Use Cases)**: servicios que orquestan la lógica de las entidades.
+* **Controlador (Controller)**: expone rutas HTTP y valida entradas/salidas.
+* **Infraestructura (Infrastructure)**: adaptadores externos, como el cliente HTTP (Axios) y el logger (Morgan).
 
-Infraestructura (Infrastructure): adaptadores externos, como el cliente HTTP (Axios) y el logger (Morgan).
+El **frontend** en Vue 3 está organizado en:
 
-El frontend en Vue 3 está organizado en:
-
-Componentes: UI reutilizable (Sidebar, HeaderBar, cards...).
-
-Servicios: función fetchData que consume el backend.
-
-App.vue: contenedor principal y gestión de pestañas.
-
-**Tecnologías clave**:
-
-| Capa     | Tecnología                                |
-| -------- | ----------------------------------------- |
-| Frontend | Vue 3, Composition API, TailwindCSS, Vite |
-| Backend  | JavaScript,Node.js, Express, Axios, Morgan           |
-| Testing  | Jest, Supertest, Vue Test Utils           |
+* **Componentes**: UI reutilizable (Sidebar, HeaderBar, cards...). UX experiencia de usuario amigable
+* **Servicios**: función `fetchData` que consume el backend.
+* **App.vue**: contenedor principal y gestión de pestañas.
 
 ---
 
@@ -46,7 +36,6 @@ App.vue: contenedor principal y gestión de pestañas.
 * **Testing**:
 
   * **Backend**: Jest + Supertest, cobertura > 80 %.
-  * **Frontend**: Jest + Vue Test Utils + vue-jest.
 
 ---
 
@@ -94,3 +83,13 @@ backend/
 └── server.js         # Entrada del servidor con cache disabled
 ```
 
+---
+
+## 🔄 Flujo de datos (texto)
+
+1. **Usuario** interactúa con la **UI** (componente Vue).
+2. El componente llama al **servicio** `fetchData` pasándole la pestaña activa.
+3. `fetchData` hace una petición a **`/api/:resource`** en el **backend**.
+4. El backend, mediante su **Controlador MVC**, recibe la petición, delega al **caso de uso** y obtiene datos de **JSONPlaceholder**.
+5. La respuesta JSON vuelve al servicio, que la exporta al componente.
+6. El componente **renderiza** los datos dinámicamente en forma de cards.
