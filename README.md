@@ -94,19 +94,3 @@ backend/
 └── server.js         # Entrada del servidor con cache disabled
 ```
 
----
-
-## 📈 Diagrama de flujo simplificado
-
-```mermaid
-flowchart LR
-  A[Usuario] --> B[Vue Components]
-  B --> C[fetchData Service]
-  C --> D[/api/:resource]
-  D --> E[Express Proxy]
-  E --> F[JSONPlaceholder API]
-  F --> E
-  E --> C
-  C --> B
-  B --> G[Render UI]
-```
