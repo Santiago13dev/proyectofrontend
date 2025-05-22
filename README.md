@@ -85,8 +85,7 @@ backend/
 
 ---
 
-## 🔄 Flujo de datos (texto)
-
+## 🔄 Flujo de datos
 1. **Usuario** interactúa con la **UI** (componente Vue).
 2. El componente llama al **servicio** `fetchData` pasándole la pestaña activa.
 3. `fetchData` hace una petición a **`/api/:resource`** en el **backend**.
