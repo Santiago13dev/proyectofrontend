@@ -1,35 +1,242 @@
-@import './base.css';
+:root {
+  --gray-100: #f9fafb;
+  --gray-200: #e5e7eb;
+  --gray-600: #4b5563;
+  --green-600: #16a34a;
+  --black: #000;
+}
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--gray-100);
+  color: var(--gray-600);
+}
+
+.sidebar {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: 250px;
+  background: white;
+  border-right: 1px solid var(--gray-200);
   padding: 2rem;
-  font-weight: normal;
 }
 
-a,
-.green {
+.sidebar h2 {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.sidebar nav a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  color: var(--gray-600);
   text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+.sidebar nav a:hover {
+  color: var(--green-600);
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
+.main-wrapper {
+  margin-left: 250px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: var(--gray-100);
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.tabs {
+  display: flex;
+  gap: 1rem;
+  padding: 0.75rem 2rem;
+  background: white;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.tab {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  color: var(--gray-600);
+}
+
+.tab.active {
+  border-bottom: 2px solid var(--green-600);
+  color: var(--green-600);
+}
+
+.content {
+  padding: 2rem;
+  flex: 1;
+  overflow: auto;
+}
+
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.post-card {
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.post-card h3 {
+  font-size: 1.125rem;
+  margin-bottom: 0.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.post-card p {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--gray-600);
+  flex: 1;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.post-card .card-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.post-card button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--gray-200);
+  background: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+}
+
+.post-card button:hover {
+  background: var(--gray-100);
+}
+/* ==============================
+   Buscador + Botón “Actualizar”
+   ============================== */
+
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.search-input {
+  flex: 1;
+  max-width: 250px;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--gray-200);
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  background: white;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-input::placeholder {
+  color: var(--gray-400);
+  font-style: italic;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--green-600);
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.2);
+}
+
+.refresh-btn {
+  padding: 0.5rem 1rem;
+  background-color: var(--green-600);
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.refresh-btn:hover {
+  background-color: hsl(160, 100%, 30%);
+}
+
+.refresh-btn:active {
+  transform: scale(0.97);
+}
+/* Sidebar mejorada */
+.sidebar {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: 250px;
+  background: white;
+  border-right: 1px solid var(--gray-200);
+  padding: 2rem 1.5rem;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar h2 {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  color: var(--green-600);
+}
+
+.sidebar nav {
+  flex: 1;
+}
+
+.sidebar nav a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--gray-600);
+  text-decoration: none;
+  border-radius: 0.375rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.sidebar nav a .material-icons {
+  font-size: 1.4rem;
+  /* hereda color del enlace */
+}
+
+.sidebar nav a:hover {
+  background: rgba(22, 163, 74, 0.1);
+  color: var(--green-600);
+}
+
+.sidebar nav a.active {
+  background: rgba(22, 163, 74, 0.15);
+  color: var(--green-600);
+  border-left: 3px solid var(--green-600);
+  padding-left: calc(1rem - 3px);
 }
