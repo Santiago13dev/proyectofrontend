@@ -1,5 +1,6 @@
 // front/proyectoapi/src/services/api.js
 import axios from 'axios';
+
 const ENDPOINTS = {
   Posts:    '/api/posts',
   Usuarios: '/api/users',
@@ -7,8 +8,12 @@ const ENDPOINTS = {
   Tareas:   '/api/todos'
 };
 
-export function fetchData(tab) {
+
+export async function fetchData(tab) {
   const url = ENDPOINTS[tab];
-  if (!url) return Promise.resolve([]);
-  return axios.get(url).then(res => res.data);
+  if (!url) return [];
+  const { data } = await axios.get(url, {
+    headers: { 'Cache-Control': 'no-cache', Pragma: 'no-cache' }
+  });
+  return data;
 }
