@@ -44,7 +44,7 @@ El **frontend** en Vue 3 está organizado en:
 1. Clonar repositorio:
 
    ```bash
-   git clone https://github.com/Santiago13dev/proyectofrontend
+   git clone https://github.com/Santiago13dev/proyectofrontend.git
    cd proyectofrontend
    ```
 
@@ -63,7 +63,6 @@ El **frontend** en Vue 3 está organizado en:
    cd front/proyectoapi
    npm install
    npm run dev         # Cliente en http://localhost:5173
-   npm run test:unit   # Tests unitarios y cobertura
    ```
 
 ---
