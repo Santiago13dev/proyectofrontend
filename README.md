@@ -11,20 +11,41 @@ Permite explorar **Posts**, **Usuarios**, **Álbumes** y **Tareas**, filtrar res
 
 ---
 
-## 🏛️ Arquitectura
+## 🏛️ Arquitectura y Estilo de Diseño
+
+El **backend** sigue un patrón **MVC** combinado con **Arquitectura Limpia**, separando:
+
+* **Model (Domain)**: Entidades y lógica de negocio puros.
+* **Use Cases**: Casos de uso y servicios que orquestan la lógica.
+* **Controller**: Rutas y validaciones de entrada/salida.
+* **Infrastructure**: Adaptadores para HTTP (Express), base de datos o clientes externos (Axios).
+
+El **frontend** está organizado en componentes Vue que consumen estos servicios.
 
 ```mermaid
-flowchart LR
-  subgraph Frontend
-    A[Usuario interactúa] --> B[Vue Components]
-    B --> C[fetchData Service]
+flowchart TB
+  subgraph Clean Architecture (Backend)
+    direction LR
+    Entities["Entities / Models"]
+    UseCases["Use Cases / Services"]
+    Controllers["Controllers (Express routes)"]
+    Infra["Infrastructure
+(Axios, Logger)"]
+
+    Entities --> UseCases --> Controllers --> Infra
   end
-  B -->|GET `/api/...`| D[Backend Proxy]
-  D -->|HTTP Request| E[JSONPlaceholder API]
-  E -->|JSON| D
-  D -->|JSON| B
-  B --> F[Render UI]
+
+  subgraph Frontend (Vue 3 + Composition API)
+    direction TB
+    U[Usuario] --> C[Componentes Vue]
+    C --> S[fetchData Service]
+    S --> B[Backend API (MVC + Clean Arch)]
+    B --> S --> C --> U
+  end
 ```
+
+---
+
 
 **Tecnologías clave**:
 
