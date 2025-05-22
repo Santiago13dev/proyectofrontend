@@ -1,32 +1,56 @@
-# JSONPlaceholder Explorer
+# 🚀 JSONPlaceholder Explorer
 
-**Descripción del proyecto**
+[![Backend Tests](https://img.shields.io/github/actions/workflow/status/USERNAME/REPO/backend-tests.yml?branch=main)](#)
+[![Frontend Tests](https://img.shields.io/github/actions/workflow/status/USERNAME/REPO/frontend-tests.yml?branch=main)](#)
+[![Coverage](https://img.shields.io/badge/coverage-86%25-brightgreen)](#)
 
-JSONPlaceholder Explorer es una aplicación full-stack que consume la API de [JSONPlaceholder](https://jsonplaceholder.typicode.com) a través de un microservicio Express (backend) y muestra los datos en una interfaz construida con Vue 3 y Tailwind CSS (frontend). Permite explorar `Posts`, `Usuarios`, `Álbumes` y `Tareas`, filtrar resultados y recargar datos.
+---
 
-**Arquitectura**
+## 🎯 Descripción del proyecto
 
-```text
-┌────────────┐       ┌───────────────┐       ┌──────────────────────────┐
-│  Frontend  │  <--  │  Backend API  │  <--  │ JSONPlaceholder (externa)│
-│ (Vue/Tail) │       │ (Express.js)  │       │ https://jsonplaceholder │
-└────────────┘       └───────────────┘       └──────────────────────────┘
+**JSONPlaceholder Explorer** es una **aplicación full-stack** que consume la API de [JSONPlaceholder](https://jsonplaceholder.typicode.com) a través de un microservicio **Express** (backend) y muestra datos en una interfaz construida con **Vue 3** y **Tailwind CSS** (frontend).
+Permite explorar **Posts**, **Usuarios**, **Álbumes** y **Tareas**, filtrar resultados y recargar datos.
+
+---
+
+## 🏛️ Arquitectura
+
+```mermaid
+flowchart LR
+  subgraph Frontend
+    A[Usuario interactúa] --> B[Vue Components]
+    B --> C[fetchData Service]
+  end
+  B -->|GET `/api/...`| D[Backend Proxy]
+  D -->|HTTP Request| E[JSONPlaceholder API]
+  E -->|JSON| D
+  D -->|JSON| B
+  B --> F[Render UI]
 ```
 
-* **Frontend**: Vue 3 + Composition API, TailwindCSS para estilos, Vite como bundler.
-* **Backend**: Node.js + Express, proxy a JSONPlaceholder con rutas `/api/posts`, `/api/users`, `/api/albums`, `/api/todos`.
+**Tecnologías clave**:
 
-**Decisiones técnicas**
+| Capa     | Tecnología                                |
+| -------- | ----------------------------------------- |
+| Frontend | Vue 3, Composition API, TailwindCSS, Vite |
+| Backend  | Node.js, Express, Axios, Morgan           |
+| Testing  | Jest, Supertest, Vue Test Utils           |
 
-* **Express como proxy**: Desacopla el consumo de la API pública y permite controlar cabeceras, caché y ETags.
-* **Vue 3 + Composition API**: Facilita la lógica reactiva y la reutilización de hooks (p.ej. `loadData`).
-* **Tailwind CSS**: Acelera maquetación y garantiza consistencia visual sin hojas de estilo complejas.
+---
+
+## 💡 Decisiones técnicas
+
+* **Express como proxy**: Control total de cabeceras, caché y ETags.
+* **Vue 3 + Composition API**: Lógica reactiva y hooks reutilizables.
+* **Tailwind CSS**: Rápida maquetación y consistencia visual.
 * **Testing**:
 
-  * **Backend**: Jest + Supertest para test de rutas, asegurando un mínimo del 30 % de cobertura.
-  * **Frontend**: Jest + Vue Test Utils + vue-jest para test de servicios y componentes.
+  * **Backend**: Jest + Supertest, cobertura > 80 %.
+  * **Frontend**: Jest + Vue Test Utils + vue-jest.
 
-**Instalación y ejecución**
+---
+
+## 🔧 Instalación y ejecución
 
 1. Clonar repositorio:
 
@@ -35,41 +59,54 @@ JSONPlaceholder Explorer es una aplicación full-stack que consume la API de [JS
    cd proyectofrontend
    ```
 
-2. Backend:
+2. **Backend**:
 
    ```bash
    cd backend
    npm install
-   # Ejecutar en modo desarrollo
-   npm run dev
-   # Ejecutar tests
-   npm test
+   npm run dev         # Servidor en http://localhost:3000
+   npm test            # Tests y cobertura
    ```
 
-3. Frontend:
+3. **Frontend**:
 
    ```bash
    cd front/proyectoapi
    npm install
-   # Ejecutar en desarrollo con Vite
-   npm run dev
-   # Ejecutar tests unitarios
-   npm run test:unit
+   npm run dev         # Cliente en http://localhost:5173
+   npm run test:unit   # Tests unitarios y cobertura
    ```
 
-4. Acceder al frontend en `http://localhost:5173` (o puerto que indique Vite).
+---
 
-**Diagrama de flujo simplificado**
+## 📄 Componentes principales
+
+```text
+src/
+├── components/       # Vue components: Sidebar, HeaderBar, PostCard, UserCard...
+├── services/api.js   # Client fetch logic
+├── App.vue           # Estructura principal y routing interno de tabs
+└── assets/main.css   # Estilos globales y personalizados
+
+backend/
+├── routes/           # Definición de rutas API
+├── src/app.js        # Configuración de Express
+└── server.js         # Entrada del servidor con cache disabled
+```
+
+---
+
+## 📈 Diagrama de flujo simplificado
 
 ```mermaid
 flowchart LR
-  subgraph Frontend
-    A[Usuario interactúa] --> B[Vue Components]
-    B --> C[Servicio fetchData]
-  end
-  B -->|GET /api/...| D[Backend Proxy]
-  D -->|HTTP Request| E[JSONPlaceholder API]
-  E -->|Respuesta JSON| D
-  D -->|Forward JSON| B
-  B --> F[Render UI]
+  A[Usuario] --> B[Vue Components]
+  B --> C[fetchData Service]
+  C --> D[/api/:resource]
+  D --> E[Express Proxy]
+  E --> F[JSONPlaceholder API]
+  F --> E
+  E --> C
+  C --> B
+  B --> G[Render UI]
 ```
